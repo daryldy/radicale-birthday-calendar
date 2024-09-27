@@ -25,5 +25,5 @@ To simulate a change
 3. Then, as your Radicale user
 ```
 $ cd /var/lib/radicale/collections
-$ echo 'anna/1264849c-8f4b-4bd2-ae18-033641fccd4b/db67431c-ad1c-448b-a5e9-827ff07a4aa8.vcf' | python3 /create_birthday_calendar.py
+$ echo 'collection-root/anna/1264849c-8f4b-4bd2-ae18-033641fccd4b/db67431c-ad1c-448b-a5e9-827ff07a4aa8.vcf' | python3 /create_birthday_calendar.py
 ```
