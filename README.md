@@ -21,7 +21,7 @@ Restart Radicale. Once you change one of your contacts, the script creates a cal
 
 To simulate a change
 1. Locate the file system folder for collections (e.g. `/var/lib/radicale/collections`)
-2. Locate the contact you simulate to have changed (e.g. `anna/1264849c-8f4b-4bd2-ae18-033641fccd4b/db67431c-ad1c-448b-a5e9-827ff07a4aa8.vcf`)
+2. Locate the contact you simulate to have changed (e.g. `collection-root/anna/1264849c-8f4b-4bd2-ae18-033641fccd4b/db67431c-ad1c-448b-a5e9-827ff07a4aa8.vcf`)
 3. Then, as your Radicale user
 ```
 $ cd /var/lib/radicale/collections
