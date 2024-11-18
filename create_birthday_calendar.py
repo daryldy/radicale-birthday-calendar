@@ -3,6 +3,7 @@ import fileinput
 import json
 import os
 import random
+import uuid
 from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Iterator, Any
@@ -74,15 +75,32 @@ def get_birthday_calendar(user: str) -> Iterator[tuple[str, Any]]:
 
 def create_birthday(user: str, contact):
     calendar = vobject.iCalendar()
+
+    # Basic event properties
     event = calendar.add('vevent')
     event.add('summary').value = contact.fn.value
     event.add('dtstart').value = parse_date(contact.bday.value).date()
     event.add('dtend').value = event.dtstart.value + timedelta(days=1)
     event.add('uid').value = contact.uid.value
+
+    # (Optional) Set reminder
+    try:
+        remind_hour = int(os.getenv("BIRTHDAY_REMINDER_AT_HOUR"))
+    except (TypeError, ValueError):
+        pass
+    else:
+        alarm = event.add('valarm')
+        alarm.add('action').value = 'DISPLAY'
+        alarm.add('description').value = 'Reminder'
+        alarm.add('trigger').value = timedelta(hours=remind_hour)
+        alarm.add('uid').value = str(uuid.uuid4())
+
+    # Repeat yearly
     newrule = rrule.rruleset()
     newrule.rrule(rrule.rrule(rrule.YEARLY, dtstart=event.dtstart.value))
     event.rruleset = newrule
 
+    # Write to disk
     collection = f'{user}/birthdays'
     with open(f'{collection}/{contact.uid.value}', 'w') as fp:
         fp.write(calendar.serialize())
