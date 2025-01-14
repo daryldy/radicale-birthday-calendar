@@ -63,7 +63,15 @@ def get_birthday_calendar(user: str) -> Iterator[tuple[str, Any]]:
     fn = f'{collection}/.Radicale.props'
     if not os.path.exists(fn):
         with open(fn, 'w') as fp:
-            color = ''.join(random.choices('0123456abcdef', k=6))
+            # (Optional) Get calendar color from environment
+            color = os.getenv("BIRTHDAY_CALENDAR_COLOR")
+            if color:
+                # If color was set, strip '#' for consistency
+                color = color.strip('#')
+            else:
+                # Or alternatively choose something at random
+                color = ''.join(random.choices('0123456abcdef', k=6))
+
             data = {
                 'C:supported-calendar-component-set': 'VEVENT',
                 'D:displayname': 'Birthdays',
