@@ -18,7 +18,7 @@ def parse_date(date_str):
             return datetime.strptime(date_str, date_fmt)
         except ValueError:
             pass
-    raise ValueError(f"could not parse date {date_str}")
+    raise ValueError(f'could not parse date {date_str}')
 
 
 def get_changed_files() -> dict[str, list[str]]:
@@ -85,7 +85,7 @@ def create_birthday(user: str, contact):
 
     # (Optional) Set reminder
     try:
-        remind_hour = int(os.getenv("BIRTHDAY_REMINDER_AT_HOUR"))
+        remind_hour = int(os.getenv('BIRTHDAY_REMINDER_AT_HOUR'))
     except (TypeError, ValueError):
         pass
     else:
