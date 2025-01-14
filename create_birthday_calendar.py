@@ -103,7 +103,7 @@ def create_birthday(user: str, contact):
 
     # Write to disk
     collection = f'{user}/birthdays'
-    with open(f'{collection}/{contact.uid.value}', 'w') as fp:
+    with open(f'{collection}/{contact.uid.value}.ics', 'w') as fp:
         fp.write(calendar.serialize())
 
 
