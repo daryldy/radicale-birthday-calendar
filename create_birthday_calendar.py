@@ -67,6 +67,7 @@ def get_birthday_calendar(user: str) -> Iterator[tuple[str, Any]]:
             data = {
                 'C:supported-calendar-component-set': 'VEVENT',
                 'D:displayname': 'Birthdays',
+                'C:calendar-description': '[AUTO GENERATED] Birthdays from all addressbooks',
                 'ICAL:calendar-color': f'#{color}',
                 'tag': 'VCALENDAR'}
             json.dump(data, fp, indent=None)
