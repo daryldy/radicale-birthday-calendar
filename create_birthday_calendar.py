@@ -18,7 +18,7 @@ def parse_date(date_str):
             return datetime.strptime(date_str, date_fmt)
         except ValueError:
             pass
-    raise ValueError(f"could not parse date {date_str}")
+    raise ValueError(f'could not parse date {date_str}')
 
 
 def get_changed_files() -> dict[str, list[str]]:
@@ -63,10 +63,19 @@ def get_birthday_calendar(user: str) -> Iterator[tuple[str, Any]]:
     fn = f'{collection}/.Radicale.props'
     if not os.path.exists(fn):
         with open(fn, 'w') as fp:
-            color = ''.join(random.choices('0123456abcdef', k=6))
+            # (Optional) Get calendar color from environment
+            color = os.getenv("BIRTHDAY_CALENDAR_COLOR")
+            if color:
+                # If color was set, strip '#' for consistency
+                color = color.strip('#')
+            else:
+                # Or alternatively choose something at random
+                color = ''.join(random.choices('0123456abcdef', k=6))
+
             data = {
                 'C:supported-calendar-component-set': 'VEVENT',
                 'D:displayname': 'Birthdays',
+                'C:calendar-description': '[AUTO GENERATED] Birthdays from all addressbooks',
                 'ICAL:calendar-color': f'#{color}',
                 'tag': 'VCALENDAR'}
             json.dump(data, fp, indent=None)
@@ -85,7 +94,7 @@ def create_birthday(user: str, contact):
 
     # (Optional) Set reminder
     try:
-        remind_hour = int(os.getenv("BIRTHDAY_REMINDER_AT_HOUR"))
+        remind_hour = int(os.getenv('BIRTHDAY_REMINDER_AT_HOUR'))
     except (TypeError, ValueError):
         pass
     else:
@@ -102,7 +111,7 @@ def create_birthday(user: str, contact):
 
     # Write to disk
     collection = f'{user}/birthdays'
-    with open(f'{collection}/{contact.uid.value}', 'w') as fp:
+    with open(f'{collection}/{contact.uid.value}.ics', 'w') as fp:
         fp.write(calendar.serialize())
 
 
