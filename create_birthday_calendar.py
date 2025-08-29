@@ -13,9 +13,10 @@ import vobject
 
 
 def parse_date(date_str):
-    for date_fmt in ('%Y-%m-%d', '%Y%m%d', '--%m%d'):
+    no_year_fmt = '--%m%d;%Y'
+    for date_fmt in ('%Y-%m-%d', '%Y%m%d', no_year_fmt):
         try:
-            return datetime.strptime(date_str, date_fmt)
+            return datetime.strptime(date_str if date_fmt != no_year_fmt else f'{date_str};1904', date_fmt)
         except ValueError:
             pass
     raise ValueError(f'could not parse date {date_str}')
